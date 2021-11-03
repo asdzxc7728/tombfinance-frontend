@@ -26,6 +26,8 @@ import ZapModal from '../Bank/components/ZapModal';
 
 import { makeStyles } from '@material-ui/core/styles';
 import useTombFinance from '../../hooks/useTombFinance';
+import useTreasuryAmount from '../../hooks/useTreasuryAmount';
+import { getDisplayBalance } from '../../utils/formatBalance';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -51,6 +53,7 @@ const Home = () => {
   const tShareStats = usetShareStats();
   const tBondStats = useBondStats();
   const tombFinance = useTombFinance();
+  const treasuryAmt = useTreasuryAmount();
 
   let tomb;
   let tShare;
@@ -317,7 +320,7 @@ const Home = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Card>
             <CardContent align="center">
               <h2>TOMB-FTM Spooky LP</h2>
@@ -345,7 +348,7 @@ const Home = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Card>
             <CardContent align="center">
               <h2>TSHARE-FTM Spooky LP</h2>
@@ -374,6 +377,24 @@ const Home = () => {
             </CardContent>
           </Card>
         </Grid>
+        <Grid item xs={12} sm={4}>
+          <Card style={{ height: '100%' }}>
+            <CardContent align="center">
+              <h2>Treasury Tomb Balance</h2>
+              <Box mt={4}>
+                <CardIcon>
+                  <TokenSymbol symbol="TOMB" />
+                </CardIcon>
+              </Box>
+              <Box mt={4} style={{ marginTop:'52px'}}>
+                <span style={{ fontSize: '26px'}}>
+                  {getDisplayBalance(treasuryAmt)} TOMB
+                </span>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+
       </Grid>
     </Page>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
@@ -7,6 +7,7 @@ import Page from '../../components/Page';
 import RegulationsImage from '../../assets/img/regulations_bg.png';
 import { createGlobalStyle } from 'styled-components';
 import useTombFinance from '../../hooks/useTombFinance';
+import config from '../../config';
 
 const BackgroundImage = createGlobalStyle`
   body, html {
@@ -51,7 +52,7 @@ const Regulations = () => {
     var sum = (Number(dao) + Number(dev) + Number(masonry)).toFixed(2);
     return { epoch, dao, dev, masonry, sum, bondsBought, bondsRedeemed };
   }
-  useEffect(() => {
+  const refreshData = useCallback(() => {
     if (tombFinance) {
       const thisData = tombFinance.listenForRegulationsEvents();
       thisData.then((elements) => {
@@ -71,6 +72,12 @@ const Regulations = () => {
         );
       });
     }
+  }, [tombFinance]);
+
+  useEffect(() => {
+    refreshData();
+    const refreshInterval = setInterval(refreshData, config.refreshInterval);
+    return () => clearInterval(refreshInterval);
   }, [tombFinance]);
 
   return (
